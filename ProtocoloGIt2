@@ -1,0 +1,759 @@
+###########################
+# 0. Requisitos
+######
+
+1. Tener instalado: git
+
+https://sourceforge.net/projects/git-osx-installer/
+
+2. Crear una cuenta en https://github.com
+
+Si te dice:
+“git-2.15.0-intel-universal-mavericks.pkg” no se puede abrir porque proviene de un desarrollador no identificado.
+
+HAs lo siguiente:
+1. En tu Mac, selecciona menú Apple  > Preferencias del Sistema, haz clic en “Seguridad y privacidad” y luego en General.
+
+   Abrir el panel General por mí
+
+2. Haz clic en el ícono de bloqueo  para desbloquearlo, e ingresa un nombre y contraseña de administrador.
+
+3. Selecciona la fuente desde la cual quieres permitir que se instale software:
+
+App Store: permite únicamente las apps de Mac App Store. Esta es la configuración más segura. Apple identifica a todos los desarrolladores de las apps en Mac App Store, y revisa cada app antes de aceptarla. macOS comprueba la app antes de abrirla por primera vez para asegurarse de que no se haya modificado desde su lanzamiento por parte del desarrollador. En caso de que se produzca cualquier problema con una app, Apple la eliminará de Mac App Store.
+
+App Store y desarrolladores identificados: permite las apps de Mac App Store y las apps de desarrolladores identificados. Los desarrolladores identificados están registrados con Apple y, de manera opcional, pueden cargar sus apps en Apple para realizar una verificación de seguridad. Si una app tiene problemas, Apple puede revocar su autorización. macOS comprueba la app antes de abrirla por primera vez para asegurarse de que no se haya modificado desde su lanzamiento por parte del desarrollador.
+
+Si aun así no se abre, puedes:
+Puedes abrir una app que no está permitida si invalidas manualmente la configuración en el panel de preferencias “Seguridad y privacidad”.
+
+1. En el Finder  en tu Mac, localiza la app que quieres abrir.
+
+   La mayoría de las apps se encuentran en la carpeta Aplicaciones.
+
+2. Con la tecla Control presionada, haz clic en el ícono de la app y selecciona Abrir desde el menú de función rápida.
+
+3. Haz clic en Abrir.
+
+ La app se guarda como una excepción de la configuración de seguridad y podrás abrirla en  el futuro al hacer doble clic en ella, como con cualquier app autorizada.
+
+###############
+#. 1. ¿Qué es un control de versiones?
+#. ¿Porque puede ser útil un control de versiones? 
+####
+
+##############################
+# 2. Configurando tu git
+###################
+# Objetivo:
+# Configurar git la primera vez que es usado en tu computadora
+# Entender la idea de la bandera de configuración --global
+
+# define tu nombre y tu correo ó el editor que deseas usar para todos los proyectos
+# usa el correo que definiste en tu cuenta de GitHub.  Si aun no tienes usuario , generalo.
+$ git config --global user.name "<tu nombre>"
+$ git config --global user.email "<tucorreo@tudominio>"
+
+######
+# Cambia la manera en que Git reconoce y codifica los finales de linea usando el comando 
+#core.autocrlf Siguiendo las recomendaciones según tu SO:
+
+# En macOS y Linux:
+$ git config --global core.autocrlf input
+
+
+# En Windows:
+$ git config --global core.autocrlf true
+
+
+# PAra ver tu configuración hasta este momento puedes listar:
+
+$ git config --list
+
+# tu puedes cambiar tu configuración tantas veces como quieras. 
+
+# Recuerda que si olvidad un comando de git puedes accesar a la lista de comando usando -h o --help
+
+$git config -h 
+
+
+##############################
+# 3. Creando un repositorio
+##############################
+# ¿Donde almacena Git la información? 
+# Objetivo:
+# Crear un repositorio local de Git
+#
+
+#. Inicia generando un directorio general para todos tus proyectos con una carpeta llamada git:
+# Creando el directorio git:
+$ mkdir ~git
+
+# entra en el directorio:
+$ cd ~git
+
+# Crea tu proyecto:
+mkdir ProyectoRomanos
+
+# Estra en tu proyecto:
+$ cd ProyectoRomanos
+ 
+# Nota que es una buena idea evitar espacios en los directorios y archivos,   
+# principalmente porque estaremos trabajando con linea de comandos y en este contexto
+# los espacios son delimitados. 
+
+# Ahora necesitamos decir a git que este es un repositorio git: — un lugar donde Git puede almacenar las versiones 
+
+$ git init
+
+# Si usamos ls para mostrar el contenido del directorio, parece que nada ha cambiado:
+$ ls
+
+# Pero si agregamos la flag -a para mostrar todo, podemos ver que Git ha creado un
+# directorio oculto dentro de planets llamado .git: 
+
+$ ls -a 
+
+# Punto Clave:  git init iniciativa un repositorio. 
+
+#####################################
+# 4. Rastreando Cambios
+######################################
+# Preguntas
+# ¿Cómo registro cambios en Git?
+# ¿Cómo reviso el estatus de mi repositorio de control de versiones?
+# ¿Cómo registro notas acerca de los cambios que he hecho y por qué?
+# Objetivos
+# Ir a través del ciclo modificar-agregar-commit para uno o más archivos.
+# Explicar dónde se almacena la información en cada etapa del flujo de trabajo de un 
+# commit de Git.
+# Distinguir entre mensajes descriptivos y no-descriptivos de un commit.
+
+
+# Primero asegúrate que estamos aún en el directorio correcto. 
+# Deberías estar en el directorio ProyectoRomanos.
+
+$ pwd
+
+# Si aún estás en otra carpeta navega de regreso a ProyectoRomanos
+$ cd ..
+
+Vamos a crear un archivo llamado nombres.txt que contiene algunas notas sobre la aptitud del Planeta Rojo como base. Usaremos vi para editar el archivo; puedes usar el editor que prefieras. En particular, éste no tiene que ser el core.editor que definiste globalmente con anterioridad. Pero recuerda, los comandos bash para crear o editar un nuevo archivo van a depender del editor que tú escojas (podría no ser nano). Para un repaso sobre editores de texto, echa un vistazo a “¿Qué editor usar?” en la lección La terminal de Unix .
+
+$ vi nombres.txt
+
+# Ingresa tu nombre completo, tabulador, fecha de cumpleaños,tabulador, porque tomar este curso 
+
+$  git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	nombres.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+# El mensaje de “untracked files” significa que un archivo no está siendo rastreado por Git. Podemos poner los archivos en el staging area con git add.
+
+$ git add nombres.txt
+
+# y luego verificar que hizo lo correcto:
+
+$ git status
+
+#Git ahora sabe que tiene que seguir la pista de nombres.txt, pero no ha registrado los 
+# cambios con un commit aún. Para que lo haga, necesitamos ejecutar un comando más:
+
+$ git commit -m "Inicio agregando mi nombre"
+
+[master (root-commit) 1cbccf8] Inicio agregando mi nombre
+ 1 file changed, 2 insertions(+)
+ create mode 100644 nombres.txt
+
+#Cuando ejecutamos git commit, Git toma todo lo que le hemos dicho que salve usando git 
+#add y almacena una copia permanentemente dentro del directorio especial .git. Esta copia 
+#permanente es llamada un commit (o revision) y su identificador corto es f22b25e (Tu 
+#commit podría tener otro identificador.)
+
+
+#Usamos la flag -m (por “message”) para registrar un comentario corto, descriptivo y #específico que nos ayudará a recordar más tarde lo que hicimos y por qué. Si ejecutamos #git commit sin la opción -m, Git ejecutará nano (o cualquier otro editor que hayamos #configurado como core.editor) para que podamos escribir un mensaje más largo.
+
+#Los Buenos mensajes en un commit inician con un breve resumen (<50 caracteres) de los #cambios hechos en el commit. Si quieres entrar en más detalles, agrega una línea blanca #entre la línea del resumen y tus notas adicionales.
+
+# Si ejecutamos git status ahora:
+
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+# nos dice que todo está actualizado. Si queremos saber lo que hemos hecho recientemente, # podemos pedir a Git que nos muestre la historia del proyecto usando git log:
+
+$ git log
+commit 1cbccf8497ba79bec3b817bbb9863e140422e9e0 (HEAD -> master)
+Author: Veronica Jimenez Jacinto <vjimenez@ibt.unam.mx>
+Date:   Sat Oct 24 22:08:01 2020 -0500
+
+    Inicio agregando mi nombre
+
+# git log lista todos los commits hechos a un repositorio en orden cronológico inverso. El 
+# listado de cada commit incluye el identificador completo del commit (el cual comienza 
+# con el mismo caracter que el identificador corto que imprime el comando git commit 
+# anterior), el autor del commit, cuándo fue creado, y el mensaje de registro que se le 
+# dio a Git cuando el commit fue creado.
+
+# ¿Dónde están mis cambios?
+
+#Si ejecutamos ls en este punto, aún veremos un solo archivo llamado mars.txt. Esto es 
+# porque Git guarda información acerca de la historia de los archivos en el directorio 
+# especial .git mencionado antes para que nuestro sistema de archivos no se abarrote (y 
+#para que no podamos editar o borrar accidentalmente una versión anterior).
+
+vi nombres.txt
+Oscar Emilio Caballero	29 Agosto 1999	Realmente no quiere aprender pero lo obligaron a entrar
+
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   nombres.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+#La última línea es la frase clave: “no changes added to commit”. Hemos cambiado este 
+#archivo, pero no le hemos dicho a Git que queremos que guarde los cambios (lo cual 
+#hacemos con git add) ni los hemos guardado (lo cual hacemos con git commit). Así que 
+#hagamos eso ahora. Es una buena práctica revisar siempre nuestros cambios antes de 
+#guardarlos. Hacemos esto usando git diff. Esto nos muestra las diferencias entre el 
+#estado actual del archivo y la versión guardada más reciente:
+
+$ git diff
+diff --git a/nombres.txt b/nombres.txt
+index 20591b8..52570d6 100644
+--- a/nombres.txt
++++ b/nombres.txt
+@@ -1,2 +1,3 @@
+ Veronica Jimenez Jacinto       9 de Marzo 69   Quiero aprender a manejar esta chunche
++Oscar Emilio Caballero 29 Agosto 1999  Realmente no quiere aprender pero lo obligaron a entrar
+
+# La salida es críptica porque en realidad es una serie de comandos para herramientas como editores y 
+# patch que les dice cómo reconstruir un archivo a partir del otro. Si lo dividimos en secciones:
+
+# 1. La primera línea nos dice que Git está produciendo un output similar al del comando Unix 
+# 	diff comparando las versiones anterior y nueva del archivo.
+# 2. La segunda línea dice exactamente qué versiones del archivo está comparando Git;  
+# 	20591b8 y 52570d6 son etiquetas únicas generadas por computadora para esas versiones.
+# 3. Las líneas tercera y cuarta muestran una vez más el nombre del archivo que se está 
+# 	cambiando.
+#4. Las líneas restantes son las más interesantes, ellas nos muestran las diferencias en 
+#	cuestión y las líneas donde ellas ocurren. En particular, el marcador + en la 
+#	primera columna muestra dónde agregamos una línea.
+
+#Después de revisar nuestro cambio, es tiempo de hacer un commit de eso:
+
+$ git commit -m "Agregando a Emilio"
+On branch master
+Changes not staged for commit:
+	modified:   nombres.txt
+
+no changes added to commit
+
+# ¡Vaya!: Git no hará commit porque no usamos git add primero. Arreglemos esto:
+$ git add nombres.txt
+$ git commit -m " Agregando a Emilio"
+[master cb6d7b1]  Agregando a Emilio
+ 1 file changed, 1 insertion(+)
+
+#############...
+Git insiste en que agreguemos archivos al conjunto de cambios que queremos hacer antes de hacer commit de alguna cosa. Esto permite hacer commit de nuestros cambios en etapas y capturarlos en porciones lógicas en lugar de solo lotes grandes. Por ejemplo, supongamos que agregamos algunas citas a una investigación relevante para nuestra tesis. Podríamos querer hacer commit a esas adiciones, y su correspondiente registro bibliográfico, pero no hacer commit del trabajo que estamos haciendo sobre la conclusión (el cual no hemos terminado aún).
+
+Para permitir esto, Git tiene un staging area especial donde mantiene registro de cosas que han sido agregadas al actual changeset pero aún no se han vuelto commit.
+
+Staging Area
+
+Si piensas en Git como tomar instantáneas de cambios durante la vida de un proyecto, git add especifica qué irá en una instantánea (poniendo cosas en el staging area), y git commit entonces realmente toma la instantánea, y genera un registro permanente de esto (como un commit). Si no tienes nada en el staging area cuando escribes git commit, Git te pedirá que uses git commit -a o git commit --all, ¡Que es como reunir a todos para la foto! Sin embargo, es casi siempre mejor agregar explícitamente cosas al staging area, porque podrías hacer commit de cambios que habías olvidado. (Volviendo a las instantáneas, podrías capturar al extra con el maquillaje incompleto caminando en el escenario para la toma porque usaste -a!) Trata de organizar las cosas manualmente o podrías encontrarte buscando “deshacer git commit” más de lo que te gustaría!
+####...
+
+# Imagen staging area
+
+# Veamos cómo nuestros cambios a un archivo se mueven de nuestro editor al staging area y luego al 
+# almacenamiento de largo plazo. Primero, agregamos otra línea al archivo:
+
+vi nombres.txt
+# Nelson Mandela	18 julio 1918	No mas por aprender
+
+$ git diff
+diff --git a/nombres.txt b/nombres.txt
+index 52570d6..159abe3 100644
+--- a/nombres.txt
++++ b/nombres.txt
+@@ -1,3 +1,4 @@
+ Veronica Jimenez Jacinto       9 de Marzo 69   Quiero aprender a manejar esta chunche
+ Oscar Emilio Caballero 29 Agosto 1999  Realmente no quiere aprender pero lo obligaron a entrar
++Nelson Mandela 18 julio 1918   No mas por aprender
+
+# Hasta aquí, todo bien: hemos agregado una línea al final del archivo (mostrado con un + en la primera 
+# columna). Ahora pongamos el cambio en el staging area y veamos lo que reporta git diff:
+
+$ git add nombres.txt
+$ git diff
+
+# No hay output: hasta donde Git puede decir, no hay diferencias entre lo que se pidió guardar 
+# permanentemente y lo que actualmente está en el directorio. Sin embargo, si hacemos esto:
+
+$ git diff --staged
+diff --git a/nombres.txt b/nombres.txt
+index 52570d6..159abe3 100644
+--- a/nombres.txt
++++ b/nombres.txt
+@@ -1,3 +1,4 @@
+ Veronica Jimenez Jacinto       9 de Marzo 69   Quiero aprender a manejar esta chunche
+ Oscar Emilio Caballero 29 Agosto 1999  Realmente no quiere aprender pero lo obligaron a entrar
++Nelson Mandela 18 julio 1918   No mas por aprender
+
+# esto nos muestra la diferencia entre el último cambio que sí hizo commit y lo que está en el staging 
+# area. Guardemos nuestros cambios:
+
+$ git commit -m "Agregando una personalidad: Mandela"
+[master b67cea8] Agregando una personalidad: Mandela
+ 1 file changed, 1 insertion(+)
+
+# revisa nuestro estatus:
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+# Y revisamos nuestra historia.  Todo lo que hemos hecho hasta este punto
+$ git log
+
+$ git log
+commit b67cea801834027058d6c2d4851dccbfffa29228 (HEAD -> master)
+Author: Veronica Jimenez Jacinto <vjimenez@ibt.unam.mx>
+Date:   Sun Oct 25 04:24:43 2020 -0600
+
+    Agregando una personalidad: Mandela
+
+commit cb6d7b1d67da3b7d541ea8b4ba8ce1ac58937116
+Author: Veronica Jimenez Jacinto <vjimenez@ibt.unam.mx>
+Date:   Sun Oct 25 03:54:56 2020 -0600
+
+     Agregando a Emilio
+
+commit 1cbccf8497ba79bec3b817bbb9863e140422e9e0
+Author: Veronica Jimenez Jacinto <vjimenez@ibt.unam.mx>
+Date:   Sat Oct 24 22:08:01 2020 -0500
+
+    Inicio agregando mi nombre
+
+########...
+Recapitulando, cuando queremos agregar cambios a nuestro repositorio, primero necesitamos agregar los archivos cambiados al staging area (git add) y luego hacer un commit de los cambios al repositorio (git commit):
+#########
+
+#################
+# Ejercicio:  Repositorio bio
+#. Sal de la carpeta proyectoRomanos
+# 1. Crea un nuevo repositorio Git en tu computadora, llamado bio.
+# 2. Escribe una autobiografía de tres líneas en un archivo llamado me.txt, haz commit de tus cambios
+# 3. Modifica una línea, agrega una cuarta línea
+# 4. Muestra las diferencias entre el estado actualizado y el original
+#
+
+# Sol:
+# sal de la carpeta projectoRomanos:
+
+$ cd ..
+
+#Crea una nueva carpeta llamada bio y ‘navega’ a ella:
+
+$ mkdir bio
+$ cd bio
+
+# Inicia git:
+
+$ git init
+
+#Crea tu archivo de biografía me.txt usando nano u otro editor de texto. Una vez hecho, agrega y haz 
+# commit de tu cambio al repositorio:
+
+$ git add me.txt
+$ git commit -m'Adicionando el archivo de mi biografia'
+
+# Modifica el archivo como se describe arriba (modifica una línea, agrega una cuarta línea). Para mostrar # las diferencias entre el estado actual y el original, usa git diff:
+
+$ git diff me.txt
+
+#######
+# Ejercicio 2.
+
+# Author y Committer
+
+Para cada uno de los commits que hayas hecho, Git almacenó tu nombre 2 veces. Tú eres nombrado como el author y el committer. Puedes observar esto, diciendo a Git que te muestre más información acerca de tus últimos commits:
+
+$ git log --format=full
+
+# Cuando haces commit puedes nombrar a alguien más como el author:
+
+$ git commit --author="Vlad Dracula <vlad@tran.sylvan.ia>"
+
+# Crea un nuevo repositorio y crea dos commits: uno sin la opción --author y uno nombrando a un colega 
+# tuyo como el author. Ejecuta git log y git log --format=full. Piensa acerca de cómo esto puede 
+# permitirte colaborar con tus colegas.
+
+# Sol:
+$ git add me.txt
+$ git commit -m "Update Vlad's bio." --author="Frank N. Stein <franky@monster.com>"
+
+$ git log --format=full
+
+###
+#Puntos Clave
+
+# - git status muestra el estatus de un repositorio.
+# - Los archivos pueden ser almacenados en un directorio de trabajo del proyecto (el cual ven los usuarios), el staging area (donde el siguiente commit está siendo construido) y el repositorio local (donde los commits son registrados permanentemente).
+# - git add pone archivos en el staging area.
+# - git commit guarda el contenido del staging area como un nuevo commit en el repositorio local.
+# - Siempre escribe un mensaje de registro cuando hagas un commit con cambios.
+
+################################
+# 5. Explorando el "History"
+################################
+
+
+################################
+# 6. Ignorando Cosas
+################################
+Preguntas
+¿Cómo puedo indicarle a Git que ignore los archivos que no quiero rastrear?
+Objetivos
+Configure Git para ignorar archivos específicos.
+Explica por qué ignorar los archivos puede ser útil.
+
+¿Qué pasa si tenemos archivos que no queremos que Git rastree, como archivos de copia de seguridad creados por nuestro editor o archivos intermedios creados durante el análisis de datos? Vamos a crear algunos archivos ficticios:
+
+$ mkdir results
+$ touch a.dat b.dat c.dat results/a.out results/b.out
+Mira lo que Git dice:
+
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	a.dat
+	b.dat
+	c.dat
+	results/
+nothing added to commit but untracked files present (use "git add" to track)
+Colocar estos archivos bajo el control de versiones sería un desperdicio de espacio en disco. Y lo que es peor, al tenerlos todos listados, podría distraernos de los cambios que realmente importan, así que vamos a decirle a Git que los ignore.
+
+Lo hacemos creando un archivo en el directorio raíz de nuestro proyecto llamado .gitignore:
+
+$ nano .gitignore
+$ cat .gitignore
+*.dat
+results/
+Estos patrones le dicen a Git que ignore cualquier archivo cuyo nombre termine en .dat y todo lo que haya en el directorio results. (Si alguno de estos archivos ya estaba siendo rastreado, Git seguirá rastreándolos.)
+
+Una vez que hemos creado este archivo, la salida de git status es mucho más limpia:
+
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+nothing added to commit but untracked files present (use "git add" to track)
+Lo único que Git advierte ahora, es el archivo .gitignore recién creado. Podrías pensar que no queremos rastrearlo, pero todos aquellos con los que compartimos nuestro repositorio probablemente desearán ignorar las mismas cosas que nosotros. Vamos a agregar y hacer “commit” de .gitignore:
+
+$ git add .gitignore
+$ git commit -m "Add the ignore file"
+$ git status
+# On branch master
+nothing to commit, working directory clean
+
+# Como ventaja, usar .gitignore nos ayuda a evitar agregar accidentalmente al repositorio los archivos que 
+# no queremos rastrear:
+
+$ git add a.dat
+The following paths are ignored by one of your .gitignore files:
+a.dat
+Use -f if you really want to add them.
+
+# Si realmente queremos anular la configuración de ignorar, podemos usar git add -f para obligar a Git a 
+# añadir algo. Por ejemplo, git add -f a.dat. También podemos ver siempre el estado de los archivos 
+# ignorados si queremos:
+
+$ git status --ignored
+On branch master
+Ignored files:
+ (use "git add -f <file>..." to include in what will be committed)
+
+        a.dat
+        b.dat
+        c.dat
+        results/
+
+nothing to commit, working directory clean
+
+
+################################
+# 7. Repositorios remotos en GitHub
+################################
+Preguntas
+¿Cómo puedo compartir los cambios con otros en la web?
+Objetivos
+Explica qué es un repositorio remoto y por qué es útil.
+Hacer push y pull en un repositorio remoto
+Cuando se trabaja en colaboración con otras personas es cuando el sistema de control de versiones alcanza su pleno potencial. Ya hemos visto la mayor parte de las herramientas que necesitamos para ello, tan sólo nos falta ver cómo copiar los cambios realizados de un repositorio a otro.
+
+Sistemas como Git ya nos permiten mover el trabajo realizado entre dos repositorios cualesquiera. Sin embargo, en la práctica es más sencillo establecer uno de ellos como repositorio central y tenerlo en la red en lugar de tu computadora particular. La mayoría de desarrolladores usan servicios de alojamiento en la red, tales como GitHub, BitBucket o GitLab, para alojar ese repositorio central; en la última sección de esta lección exploraremos los pros y los contras de cada uno de ellos.
+
+Empecemos por compartir con todos los demás los cambios que hemos realizado en nuestro proyecto actual. Para ello, ingresa en tu cuenta de GitHub y haz click en el icono que hay en la esquina superior derecha para crear un nuevo repositorio llamado ProyectoRomanos:
+<imagen de crear repositorio>
+Dale a tu repositorio el nombre “ProjectoRomanos” y haz click en “Create repository”:
+<imagen de proyecto creado>
+
+Tan pronto es creado el repositorio, GitHub muestra una página con una URL y algo de información sobre cómo configurar tu repositorio local.
+
+Esto en realidad ejecuta lo siguiente en los servidores de GitHub:
+
+$ mkdir ProyectoRomanos
+$ cd ProyectoRomannos
+$ git init
+
+###...
+Nuestro repositorio local contiene nuestro trabajo previo en nombres.txt, pero el repositorio remoto en GitHub todavía no contiene ningún archivo:
+
+El siguiente paso es conectar los dos repositorios. Ello se consigue convirtiendo al repositorio en GitHub en un repositorio remoto del repositorio local. La página de inicio del repositorio en GitHub incluye la secuencia de caracteres que necesitamos para identificarlo:
+
+Haz click en el enlace ‘HTTPS’ para cambiar el protocolo de SSH a HTTPS.
+
+HTTPS vs. SSH
+
+Usamos aquí HTTPS porque no necesita ninguna configuración adicional. Si en el curso quieres configurar el acceso mediante SSH, que es un poco más seguro, puedes seguir cualquiera de los excelentes tutoriales que existen en GitHub, Atlassian/BitBucket y GitLab (este último con capturas animadas de pantalla).
+
+Copia dicha URL desde el navegador, ve al repositorio local ProjectoRomanos y ejecuta allí este comando:
+#####
+
+$ git remote add origin https://github.com/vjimenez9/ProyectoRomanos.git
+
+# Asegúrate de usar la URL de tu repositorio en lugar de la de vjimenez9: la única diferencia debería ser 
+# tu nombre de usuario en lugar de vjimenez9.
+
+# Podemos comprobar que el comando ha funcionado bien ejecutando git remote -v:
+
+$ git remote -v
+origin	https://github.com/vjimenez9/ProyectoRomanos.git (fetch)
+origin	https://github.com/vjimenez9/ProyectoRomanos.git (push)
+
+####...
+El nombre origin es un apodo local para tu repositorio remoto. Se puede usar cualquier otro nombre si se desea, pero origin es la elección más habitual.
+
+Una vez seleccionado el apodo local origin, el siguiente comando enviará los cambios realizados en nuestro repositorio local al repositorio en GitHub:
+#### 
+
+$ git push origin master
+Username for 'https://github.com': vjimenez9
+Password for 'https://vjimenez9@github.com': 
+Counting objects: 9, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (9/9), 891 bytes | 891.00 KiB/s, done.
+Total 9 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), done.
+To https://github.com/vjimenez9/ProyectoRomanos.git
+ * [new branch]      master -> master
+
+#####
+# La opción ‘-u’
+
+En la documentación puedes ver que en ocasiones se usa la opción -u con el comando git push. Esta opción es sinónimo de la opción --set-upstream-to para el comando git branch y se usa para asociar el branch actual con un branch remoto, de modo que el comando git pull pueda usarse sin argumentos. Para hacer esto simplemente ejecuta git push -u origin master una vez que el repositorio remoto haya sido creado.
+#
+########
+
+# También podemos hacer pull, es decir, traernos cambios desde el repositorio remoto al repositorio local:
+$ git pull origin master
+From https://github.com/vjimenez9/ProyectoRomanos
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+
+
+# En este caso, hacer pull no ha tenido ningún efecto porque los dos repositorios están ya sincronizados. 
+# Por el contrario, si alguien antes hubiera subido con push algunos cambios al repositorio en GitHub, 
+# este comando los habría incorporado a nuestro repositorio local.
+
+# Interfaz gráfica de GitHub
+
+# Navega hasta tu repositorio planets en GitHub. En la pestaña Code, localiza el texto “XX commits” (donde 
+# “XX” es algún número) y haz click en él. Mueve el cursor sobre los tres botones que hay a la derecha de 
+# cada commit, y haz click en ellos. ¿Qué información puedes obtener/explorar con estos botones? ¿Cómo 
+# obtendrías la misma información en la terminal?
+
+######...
+#
+Push vs. Commit
+
+En esta lección hemos introducido el comando “git push”. ¿En qué se diferencia “git push” de “git commit”?
+
+Solución
+
+Cuando enviamos cambios con push, estamos interaccionando con un repositorio remoto para actualizarlo con los cambios que hemos hecho localmente (a menudo esto supone compartir con otros los cambios realizados). Por el contrario, commit únicamente actualiza tu repositorio local.
+
+Licencia GitHub y ficheros README
+
+En esta sección hemos aprendido cómo crear un repositorio remoto en GitHub, pero cuando lo hicimos no añadimos ningún fichero README.md ni ningún fichero de licencia. Si lo hubiéramos hecho, ¿qué crees que habría sucedido cuando intentaste enlazar tus repositorios local y remoto?
+
+Solución
+
+En este caso, puesto que ya teníamos un fichero README en nuestro propio repositorio (local), habríamos visto un conficto de unión, conocido como merge conflict (que es cuando git se da cuenta de que hay dos versiones de un mismo fichero y nos pide que resolvamos las diferencias).
+Puntos Clave
+
+Un repositorio Git local puede ser conectado a uno o más repositorios remotos.
+Usa el protocolo HTTPS para conectarte a un repositorio remoto hasta que hayas aprendido como hacerlo con SSH.
+git push copia los cambios desde el repositorio local a un repositorio remoto.
+git pull copia los cambios desde un repositorio remoto a un repositorio local.
+#
+####
+
+
+################################
+# 8. Trabajos en colaboración
+################################
+Preguntas
+¿Cómo puedo usar el control de versiones para colaborar con otras personas?
+Objetivos
+Clonar un repositorio remoto.
+Colaborar en crear un repositorio común.
+Para el siguiente paso, formen parejas. Una persona será el “dueño” y la otra el “colaborador”. El objetivo es que el colaborador agregue cambios al repositorio del dueño. Vamos a cambiar roles al final, de modo que ambas personas puedan participar como dueño y colaborador
+
+Practicando por tu cuenta
+
+Si estás trabajando en esta lección por tu cuenta, puedes hacerlo abriendo una segunda sesión en la ventana de la terminal. Esta ventana representará a tu compañero trabajando en otra computadora. No necesitas darle acceso a nadie en GitHub, pues tú serás ambos “compañeros”.
+
+El dueño debe dar acceso al colaborador. En GitHub, haz clic en el botón de configuración (settings) arriba a la derecha, luego selecciona “Collaborators” (yo lo encontré como Manage access) e ingresa el nombre de tu colaborador.
+
+<imagen>
+
+Para aceptar la invitación de acceso al repositorio, el colaborador debe ingresar a https://github.com/notifications o aceptar el correo.  Una vez allí, se puede aceptar la invitación a dicho repositorio.
+
+Luego, el colaborador debe descargar una copia del repositorio del dueño a su máquina. Esto se conoce como “clonar un repositorio”. Para clonar el repositorio del dueño en su carpeta de Desktop, el colaborador debe ejecutar las siguientes líneas:
+
+$ git clone https://github.com/vjimenez9/ProyectoRomanos.git ~/git/vjimenezProjectoRomanos
+
+# Reemplaza ‘vjimenez’ con el nombre de usuario del dueño.
+
+# El colaborador puede ahora hacer cambios en la versión clonada del repositorio del dueño, en la misma 
+# forma en que se hacían previamente:
+
+$ cd ~/git/vjimenezProjectoRomanos
+$ vi otrosRomanos.txt
+$ cat otrosRomanos.txt
+Oscar caballero	Acatlan	camo1201@acatlan.unam.mx
+$ git add otrosRomanos.txt
+$ git commit -m "Agregamos a Oscar"
+ 1 file changed, 1 insertion(+)
+ create mode 100644 pluto.txt
+
+# Luego enviar los cambios hacia el repositorio del dueño en GitHub haciendo push:
+
+$ git push origin master
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 306 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/vlad/planets.git
+   9272da5..29aba7c master -> master
+
+# Nota que no es necesario crear un directorio remoto llamado origin: Git utiliza este nombre de manera 
+# automática cuando clonamos un repositorio. (Esta es la razón por la cual origin era una opción sensata a 
+# la hora de configurar directorios remotos a mano).
+
+# Ahora echa un vistazo al repositorio del dueño en su sitio de Github (quizá debas actualizar la página). # Deberás ver el nuevo commit hecho por el colaborador.
+
+# Para descargar los cambios hechos por el colaborador desde GitHub, el dueño debe correr las siguientes 
+# líneas:
+
+$ git pull origin master
+remote: Counting objects: 4, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From https://github.com/vlad/planets
+ * branch master -> FETCH_HEAD
+Updating 9272da5..29aba7c
+Fast-forward
+ pluto.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 pluto.txt
+
+# Ahora hay tres repositorios sincronizados (el local del dueño, el local del colaborador y el del dueño 
+# en GitHub).
+
+### Un flujo de trabajo colaborativo básico
+
+Es considerado buena práctica estar seguro de que tienes una versión actualizada del repositorio en el que colaboras. Para ello deberías hacer un git pull antes de hacer cambios. El enfoque sería:
+
+* actualizar el repositorio local git pull origin master,
+* realizar cambios git add,
+* realizar un commit git commit -m, y
+* cargar las actualizaciones a GitHub con git push origin master
+
+Es mejor hacer varias actualizaciones pequeñas que un commit grande con cambios enormes. Commits pequeños son más fáciles de leer y revisar.
+
+### Cambiar roles
+
+Cambien los roles y repitan todo el proceso.
+
+### Revisar Cambios
+
+El dueño hace un push de los commits al repositorio sin dar información al colaborador. ¿Cómo puede éste saberlo desde la linea de comandos y desde GitHub?
+
+### Solution
+En la linea de comandos, el colaborador puede usar git fetch origin master para acceder a los cambios remotos en el repositorio local, sin hacer un merge. Luego, corriendo git diff master origin/master, el colaborador verá los cambios en la terminal.
+
+En GitHub, el colaborador puede realizar su propio fork y hallar la barra gris que indica “This branch is 1 commit behind Our-Respository:master.”. Lejos, a la derecha de la barra gris, hay un link para comparar. En la página para comparar, el colaborador debe cambiar el fork hacia su propio repositorio, luego hacer click en el link para “comparar entre forks” y, finalmente, cambiar el fork al repositorio principal. Esto mostrará todos los commits que sean distintos.
+
+### Comentar cambios en GitHub
+
+El colaborador podría tener algunas preguntas sobre cambios en una línea hechos por el dueño.
+
+Con GitHub, es posible comentar la diferencia en un commit. Sobre la línea de código a comentar aparece un botón azul para abrir una ventana.
+
+El colaborador puede escribir sus comentarios y sugerencias usando la interfaz de GitHub.
+
+### Historial de versiones, backup y control de versiones
+
+Algunos softwares que permiten hacer backups también permiten guardar un historial de versiones y recuperar versiones específicas. ¿Cómo es esta funcionalidad distinta del control de versiones? ¿Cuáles son los beneficios de usar control de versiones, Git y GitHub?
+
+#### Puntos Clave
+
+git clone copia un repositorio remoto para crear un repositorio local llamado origin configurado automáticamente.
+
+
+
+################################
+# 9. Conflictos
+################################
+
+
+################################
+# 10. La ciencia abierta
+################################
+
+################################
+# 11. Licencia
+################################
+
+
+################################
+# 12. Ejemplo de Referencia o cita
+################################
+
+################################
+# 
+################################
